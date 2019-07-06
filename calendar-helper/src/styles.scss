@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+
+/*css for fullcalendar to work*/
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
+
+
+/*basic global style*/
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+body {
+    padding: 2em 23em;
+    background:rgb(255, 255, 255);
+}
