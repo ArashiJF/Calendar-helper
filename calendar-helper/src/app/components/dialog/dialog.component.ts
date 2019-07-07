@@ -8,8 +8,9 @@ import {
   FormGroup, 
   FormBuilder, 
   FormsModule, 
-  ReactiveFormsModule } 
-from '@angular/forms';
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 
 //time picker module
 import { AmazingTimePickerModule } from 'amazing-time-picker';
@@ -46,9 +47,9 @@ export class DialogComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      title: [''],
-      hour: [''],
-      city: ['']
+      title: ['', Validators.required],
+      hour: ['', Validators.required],
+      city: ['', Validators.required]
     });
   }
 

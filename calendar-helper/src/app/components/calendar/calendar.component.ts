@@ -65,13 +65,15 @@ export class CalendarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(
       data => {
-        this.calendarEvents = this.calendarEvents.concat({
-          title: data.title,
-          start: arg.date,
-          allDay: arg.allDay,
-          hour: data.hour,
-          city: data.city
-        });
+        if (data) {
+          this.calendarEvents = this.calendarEvents.concat({
+            title: data.title,
+            start: arg.date,
+            allDay: arg.allDay,
+            hour: data.hour,
+            city: data.city
+          });
+        }
         console.log(this.calendarEvents);
       }
     );
