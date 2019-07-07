@@ -1,0 +1,18 @@
+.calendar {
+    padding: 5em;
+}
+.calendar-card {
+    min-width: 200px;
+    min-height: 200px;
+    max-width: auto;
+}
+
+::ng-deep snack-bar-container.snack-bar-style {
+    max-width: 50% !important;
+    margin: auto !important;
+}
+
+::ng-deep .snack-bar-style .mat-simple-snackbar span {
+    margin: auto !important;
+    text-align: center !important;
+}

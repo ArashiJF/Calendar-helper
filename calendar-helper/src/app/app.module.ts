@@ -13,8 +13,17 @@ import {
   MatToolbarModule,
   MatIconModule, 
   MatSidenavModule, 
-  MatListModule } 
-from '@angular/material';
+  MatListModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSnackBarModule
+} from '@angular/material';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+//time picker module
+import { AmazingTimePickerModule } from 'amazing-time-picker';
 
 /*module for the calendar grid interface*/
 import { FullCalendarModule } from '@fullcalendar/angular'; // for FullCalendar!
@@ -22,11 +31,13 @@ import { FullCalendarModule } from '@fullcalendar/angular'; // for FullCalendar!
 /*httpclient module in case we want to make any REST requests*/
 import { HttpClientModule } from '@angular/common/http';
 import { CalendarComponent } from './components/calendar/calendar.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CalendarComponent
+    CalendarComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -40,9 +51,17 @@ import { CalendarComponent } from './components/calendar/calendar.component';
     MatIconModule,
     MatSidenavModule,
     MatListModule,
-    FullCalendarModule
+    MatDialogModule,
+    FullCalendarModule,
+    AmazingTimePickerModule,
+    FormsModule, 
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSnackBarModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [DialogComponent]
 })
 export class AppModule { }

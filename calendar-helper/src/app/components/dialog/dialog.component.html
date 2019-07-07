@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Place reminder</h2>
+
+<mat-dialog-content [formGroup]="form">
+    <mat-form-field>
+        <input matInput maxlength="30" type="text" placeholder="Reminder" formControlName="title" required>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="time" atp-time-picker placeholder="time" formControlName="hour" required>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput type="text" placeholder="City" formControlName="city" required>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+
+        <button mat-button class="mat-raised-button" (click)="close()">
+            Close
+        </button>
+            <button [disabled]="!form.valid" mat-button class="mat-raised-button mat-primary" (click)="save()">
+                        Save
+            </button>            
+</mat-dialog-actions>
