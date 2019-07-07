@@ -1,5 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { 
+  Component, 
+  OnInit, 
+  ViewChild } 
+from '@angular/core';
+
+import { FullCalendarComponent } from '@fullcalendar/angular';
+
+//calendar imports
 import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { EventInput } from '@fullcalendar/core';
 
 //material imports
 import { 
@@ -18,12 +28,16 @@ from '@angular/material';
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit {
-  
+  @ViewChild('calendar', {static: false}) calendarComponent: FullCalendarComponent;
+
   /*fullcalendar plugin array*/
-  calendarPlugins = [dayGridPlugin];
+  calendarPlugins = [
+    dayGridPlugin,
+    interactionPlugin
+  ];
   
   /*fullcalendar event array*/
-  calendarEvents = [{title: 'event 1', date: '2019-07-01'}];
+  calendarEvents: EventInput[] = [];
 
   constructor() { 
   }
@@ -49,5 +63,16 @@ export class CalendarComponent implements OnInit {
     copyCalendarEvents[eventIndex] = singleEvent; //we add said entry where it belongs in the copy calendar array
     
     this.calendarEvents = copyCalendarEvents;
+  }
+
+  handleDateClick(arg) 
+  {
+    if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
+      this.calendarEvents = this.calendarEvents.concat({ // add new event data. must create new array
+        title: 'New Event',
+        start: arg.date,
+        allDay: arg.allDay
+      })
+    }
   }
 }
