@@ -16,8 +16,9 @@ import {
   MatListModule,
   MatDialogModule,
   MatFormFieldModule,
-  MatInputModule } 
-from '@angular/material';
+  MatInputModule,
+  MatSnackBarModule
+} from '@angular/material';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -56,7 +57,8 @@ import { DialogComponent } from './components/dialog/dialog.component';
     FormsModule, 
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent],

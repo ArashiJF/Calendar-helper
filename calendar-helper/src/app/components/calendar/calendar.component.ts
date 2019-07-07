@@ -23,12 +23,15 @@ import {
   MatDialogModule, 
   MatDialog,
   MatDialogConfig,
-  MatInputModule} 
-from '@angular/material';
+  MatInputModule,
+  MatSnackBarModule,
+  MatSnackBar
+} from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
 
 //moment module for dates
 import * as moment from 'moment';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
   selector: 'app-calendar',
@@ -50,12 +53,12 @@ export class CalendarComponent implements OnInit {
   /*We will create a simple id for the events*/
   _id: number = -1;
 
-  constructor(private dialog: MatDialog) { 
-  }
+  constructor(
+    private dialog: MatDialog,
+    private snackbar: MatSnackBar,
+    ) {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   openDialog(arg) {
     const dialogConfig = new MatDialogConfig;
@@ -98,8 +101,19 @@ export class CalendarComponent implements OnInit {
 
   //show an event information as popup
   information(arg) {
-    console.log(arg.event.end);
+    //set up the message to show
+    let message = arg.event.title + ' ' +arg.event.extendedProps.city;
+    this.openSnackBar(message);
   }
+
+  //snackbar to show the information about the events
+  openSnackBar(message: string, action?: string) {
+    this.snackbar.open(message, action, 
+      {panelClass: ['snack-bar-style'], 
+      duration: 5000,
+      horizontalPosition: 'center'
+    });
+  } 
 
   modifyTitle(eventIndex, newTitle) {
     let copyCalendarEvents = this.calendarEvents.slice(); //clone the current array
