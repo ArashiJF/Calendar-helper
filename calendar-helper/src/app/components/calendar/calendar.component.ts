@@ -54,6 +54,7 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit() {
+
   }
 
   openDialog(arg) {
@@ -76,14 +77,15 @@ export class CalendarComponent implements OnInit {
           let hourMinutes = data.hour.split(":");
 
           //we add the hour and minutes to the date registered
-          let aMoment = moment(arg.date).add(hourMinutes[0], 'hours').add(hourMinutes[1],'minutes').format();
+          let aStart = moment(arg.date).add(hourMinutes[0], 'hours').add(hourMinutes[1],'minutes').format();
+          let anEnd = moment(arg.date).add(hourMinutes[0], 'hours').add(hourMinutes[1]+1,'minutes').format();
           //we need to add the new event into the array and as such we concatenate it
           //we will also add the id to the event
           this.calendarEvents = this.calendarEvents.concat({
             id: this._id,
             title: data.title,
-            start: aMoment,
-            end: aMoment,
+            start: aStart,
+            end: anEnd,
             hour: data.hour,
             city: data.city
           });
@@ -92,6 +94,11 @@ export class CalendarComponent implements OnInit {
       }
     );
 
+  }
+
+  //show an event information as popup
+  information(arg) {
+    console.log(arg.event.end);
   }
 
   modifyTitle(eventIndex, newTitle) {
