@@ -64,12 +64,11 @@ export class CalendarComponent implements OnInit {
     const dialogConfig = new MatDialogConfig;
 
     //position of the dialog that will open
-    dialogConfig.position = {'top': '0', 'left': '0', 'right': '0'};
-
+    dialogConfig.direction = 'ltr'
     //dont let user click outside dialog to close
     //dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-
+    dialogConfig.data = {date: arg.date};
     this.dialogHandler(arg, dialogConfig);
   }
 
@@ -94,7 +93,7 @@ export class CalendarComponent implements OnInit {
     const dialogConfig = new MatDialogConfig;
 
     //position of the dialog that will open
-    dialogConfig.position = {'top': '0', 'left': '0', 'right': '0'};
+    dialogConfig.direction = 'ltr';
 
     //dont let user click outside dialog to close
     //dialogConfig.disableClose = true;
@@ -102,11 +101,12 @@ export class CalendarComponent implements OnInit {
 
     //current id
     const _eventId = arg.event.id;
-    
+
     dialogConfig.data = {
       title: arg.event.title,
       city: arg.event.extendedProps.city,
-      hour: arg.event.extendedProps.hour
+      hour: arg.event.extendedProps.hour,
+      date: arg.event.start
     }
 
     this.dialogHandler(arg, dialogConfig, _eventId);
@@ -154,16 +154,18 @@ export class CalendarComponent implements OnInit {
           if (id) {
             let eventIndex = this.calendarEvents.findIndex(item => item.id === id);
             if (eventIndex !== 1) {
+              //if the item is found then we replace it
               this.calendarEvents.splice(eventIndex, 1)
+              this.calendarEvents = this.calendarEvents.concat({
+                id: _eventId,
+                title: data.title,
+                start: aStart,
+                end: anEnd,
+                hour: data.hour,
+                city: data.city
+              });
+              this.openSnackBar("Event edited"); 
             }
-            this.calendarEvents = this.calendarEvents.concat({
-              id: _eventId,
-              title: data.title,
-              start: aStart,
-              end: anEnd,
-              hour: data.hour,
-              city: data.city
-            }); 
           } else {
             this.calendarEvents = this.calendarEvents.concat({
               id: _eventId,
@@ -173,6 +175,7 @@ export class CalendarComponent implements OnInit {
               hour: data.hour,
               city: data.city
             });
+            this.openSnackBar("New event added");
           }
         }
         console.log(this.calendarEvents);

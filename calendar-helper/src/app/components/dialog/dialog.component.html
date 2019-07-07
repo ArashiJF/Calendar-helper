@@ -1,5 +1,10 @@
-<h2 mat-dialog-title>Place reminder</h2>
-
+<mat-toolbar class="uptoolbar" color="primary">
+    <div>
+        <span class="date">
+           {{ title || 'add event' }} : {{ date }} 
+        </span>
+    </div>
+</mat-toolbar>
 <mat-dialog-content [formGroup]="form">
     <mat-form-field>
         <input matInput maxlength="30" type="text" placeholder="Reminder" formControlName="title" required>

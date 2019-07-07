@@ -29,6 +29,7 @@ import {MAT_DIALOG_DATA,
   MatDialogModule,
   MatInputModule
 } from "@angular/material";
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dialog',
@@ -42,6 +43,7 @@ export class DialogComponent implements OnInit {
   title: string = '';
   hour: string = '';
   city: string = '';
+  date: any;
 
   constructor(
     private fb: FormBuilder,
@@ -52,6 +54,11 @@ export class DialogComponent implements OnInit {
       this.title = data.title == null ? '' : data.title;
       this.hour = data.hour == null ? '' : data.hour;
       this.city = data.city == null ? '' : data.city;  
+    }
+
+    //Date for showing on top of dialog form
+    if (data.date) {
+      this.date = moment(data.date).format('YYYY-MM-DD');
     }
   }
 
