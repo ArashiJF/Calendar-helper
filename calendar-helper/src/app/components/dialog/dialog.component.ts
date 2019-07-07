@@ -44,6 +44,16 @@ export class DialogComponent implements OnInit {
   hour: string = '';
   city: string = '';
   date: any;
+  color: string = '';
+
+  //array of supported colors
+  colors = [
+    'red',
+    'blue',
+    'green',
+    'violet',
+    'default'
+  ]
 
   constructor(
     private fb: FormBuilder,
@@ -53,7 +63,8 @@ export class DialogComponent implements OnInit {
     if (data) {
       this.title = data.title == null ? '' : data.title;
       this.hour = data.hour == null ? '' : data.hour;
-      this.city = data.city == null ? '' : data.city;  
+      this.city = data.city == null ? '' : data.city;
+      this.color = data.color == null ? '' : data.color;
     }
 
     //Date for showing on top of dialog form
@@ -66,7 +77,8 @@ export class DialogComponent implements OnInit {
     this.form = this.fb.group({
       title: [this.title, Validators.required],
       hour: [this.hour, Validators.required],
-      city: [this.city, Validators.required]
+      city: [this.city, Validators.required],
+      color: [this.color]
     });
   }
 

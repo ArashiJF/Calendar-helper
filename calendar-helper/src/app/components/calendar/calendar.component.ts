@@ -106,12 +106,13 @@ export class CalendarComponent implements OnInit {
       title: arg.event.title,
       city: arg.event.extendedProps.city,
       hour: arg.event.extendedProps.hour,
-      date: arg.event.start
+      date: arg.event.start,
+      color: arg.event.backgroundColor
     }
-
+    console.log(arg);
     this.dialogHandler(arg, dialogConfig, _eventId);
   }
-  
+
   //add and edit reminder do the same so there is no point in having the same code twice
   //its better to have it in a single place and pass the necessary parameters
   dialogHandler(arg, dialogConfig, id?) {
@@ -132,7 +133,8 @@ export class CalendarComponent implements OnInit {
       //if we dont receive it, it comes from the edit reminder function
       _eventDate = moment(arg.event.start).format('YYYYMMDD');
     }
-
+    
+    //if we receive data back we subscribe to it
     dialogRef.afterClosed().subscribe(
       data => {
         if (data) {
@@ -147,10 +149,11 @@ export class CalendarComponent implements OnInit {
           let hourMinutes = data.hour.split(":");
 
           //we add the hour and minutes to the date registered
-          let aStart = moment(_eventDate).add(hourMinutes[0], 'hours').add(hourMinutes[1],'minutes').format();
-          let anEnd = moment(_eventDate).add(hourMinutes[0], 'hours').add(hourMinutes[1]+1,'minutes').format();
-          //we need to add the new event into the array and as such we concatenate it
-          //we will also add the id to the event
+          var aStart = moment(_eventDate).add(hourMinutes[0], 'hours').add(hourMinutes[1],'minutes').format();
+          var anEnd = moment(_eventDate).add(hourMinutes[0], 'hours').add(hourMinutes[1]+1,'minutes').format();
+          
+          var color = data.color == null ? "" : data.color;
+
           if (id) {
             let eventIndex = this.calendarEvents.findIndex(item => item.id === id);
             if (eventIndex !== 1) {
@@ -162,7 +165,9 @@ export class CalendarComponent implements OnInit {
                 start: aStart,
                 end: anEnd,
                 hour: data.hour,
-                city: data.city
+                city: data.city,
+                backgroundColor: color,
+                borderColor: color
               });
               this.openSnackBar("Event edited"); 
             }
@@ -173,7 +178,9 @@ export class CalendarComponent implements OnInit {
               start: aStart,
               end: anEnd,
               hour: data.hour,
-              city: data.city
+              city: data.city,
+              backgroundColor: color,
+              borderColor: color
             });
             this.openSnackBar("New event added");
           }
