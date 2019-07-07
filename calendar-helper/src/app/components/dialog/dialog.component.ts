@@ -29,6 +29,7 @@ import {MAT_DIALOG_DATA,
   MatDialogModule,
   MatInputModule
 } from "@angular/material";
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dialog',
@@ -39,17 +40,45 @@ export class DialogComponent implements OnInit {
 
   form: FormGroup;
 
+  title: string = '';
+  hour: string = '';
+  city: string = '';
+  date: any;
+  color: string = '';
+
+  //array of supported colors
+  colors = [
+    'red',
+    'blue',
+    'green',
+    'violet',
+    'default'
+  ]
+
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) data
-  ) {}
+  ) {
+    if (data) {
+      this.title = data.title == null ? '' : data.title;
+      this.hour = data.hour == null ? '' : data.hour;
+      this.city = data.city == null ? '' : data.city;
+      this.color = data.color == null ? '' : data.color;
+    }
+
+    //Date for showing on top of dialog form
+    if (data.date) {
+      this.date = moment(data.date).format('YYYY-MM-DD');
+    }
+  }
 
   ngOnInit() {
     this.form = this.fb.group({
-      title: ['', Validators.required],
-      hour: ['', Validators.required],
-      city: ['', Validators.required]
+      title: [this.title, Validators.required],
+      hour: [this.hour, Validators.required],
+      city: [this.city, Validators.required],
+      color: [this.color]
     });
   }
 

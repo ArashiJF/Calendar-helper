@@ -10,8 +10,9 @@
             defaultView="dayGridMonth" 
             [plugins]="calendarPlugins" 
             [events]="calendarEvents"
-            (dateClick)="openDialog($event)"
+            (dateClick)="addReminder($event)"
             (eventMouseEnter)="information($event)"
+            (eventClick)="modifyReminder($event)"
             ></full-calendar>
         </mat-card>
     </div>
