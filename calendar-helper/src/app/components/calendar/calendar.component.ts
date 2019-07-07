@@ -44,6 +44,9 @@ export class CalendarComponent implements OnInit {
   /*fullcalendar event array*/
   calendarEvents: EventInput[] = [];
 
+  /*We will create a simple id for the events*/
+  _id: number = -1;
+
   constructor(private dialog: MatDialog) { 
   }
 
@@ -66,7 +69,11 @@ export class CalendarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       data => {
         if (data) {
+          this._id++
+          //we need to add the new event into the array and as such we concatenate it
+          //we will also add the id to the event
           this.calendarEvents = this.calendarEvents.concat({
+            id: this._id,
             title: data.title,
             start: arg.date,
             allDay: arg.allDay,
@@ -88,18 +95,5 @@ export class CalendarComponent implements OnInit {
     copyCalendarEvents[eventIndex] = singleEvent; //we add said entry where it belongs in the copy calendar array
     
     this.calendarEvents = copyCalendarEvents;
-  }
-
-  /*
-  handleDateClick(arg) 
-  {
-    if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
-      this.calendarEvents = this.calendarEvents.concat({ // add new event data. must create new array
-        title: 'New Event',
-        start: arg.date,
-        allDay: arg.allDay
-      })
-    }
-    console.log(this.calendarEvents);
-  } */ 
+  } 
 }
