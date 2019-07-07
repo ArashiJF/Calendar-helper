@@ -23,9 +23,15 @@ import {
   MatDialogModule, 
   MatDialog,
   MatDialogConfig,
-  MatInputModule} 
-from '@angular/material';
+  MatInputModule,
+  MatSnackBarModule,
+  MatSnackBar
+} from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
+
+//moment module for dates
+import * as moment from 'moment';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
   selector: 'app-calendar',
@@ -47,11 +53,12 @@ export class CalendarComponent implements OnInit {
   /*We will create a simple id for the events*/
   _id: number = -1;
 
-  constructor(private dialog: MatDialog) { 
-  }
+  constructor(
+    private dialog: MatDialog,
+    private snackbar: MatSnackBar,
+    ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   openDialog(arg) {
     const dialogConfig = new MatDialogConfig;
@@ -70,13 +77,18 @@ export class CalendarComponent implements OnInit {
       data => {
         if (data) {
           this._id++
+          let hourMinutes = data.hour.split(":");
+
+          //we add the hour and minutes to the date registered
+          let aStart = moment(arg.date).add(hourMinutes[0], 'hours').add(hourMinutes[1],'minutes').format();
+          let anEnd = moment(arg.date).add(hourMinutes[0], 'hours').add(hourMinutes[1]+1,'minutes').format();
           //we need to add the new event into the array and as such we concatenate it
           //we will also add the id to the event
           this.calendarEvents = this.calendarEvents.concat({
             id: this._id,
             title: data.title,
-            start: arg.date,
-            allDay: arg.allDay,
+            start: aStart,
+            end: anEnd,
             hour: data.hour,
             city: data.city
           });
@@ -86,6 +98,22 @@ export class CalendarComponent implements OnInit {
     );
 
   }
+
+  //show an event information as popup
+  information(arg) {
+    //set up the message to show
+    let message = arg.event.title + ' ' +arg.event.extendedProps.city;
+    this.openSnackBar(message);
+  }
+
+  //snackbar to show the information about the events
+  openSnackBar(message: string, action?: string) {
+    this.snackbar.open(message, action, 
+      {panelClass: ['snack-bar-style'], 
+      duration: 5000,
+      horizontalPosition: 'center'
+    });
+  } 
 
   modifyTitle(eventIndex, newTitle) {
     let copyCalendarEvents = this.calendarEvents.slice(); //clone the current array
