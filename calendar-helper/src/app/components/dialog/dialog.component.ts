@@ -39,17 +39,27 @@ export class DialogComponent implements OnInit {
 
   form: FormGroup;
 
+  title: string = '';
+  hour: string = '';
+  city: string = '';
+
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) data
-  ) {}
+  ) {
+    if (data) {
+      this.title = data.title == null ? '' : data.title;
+      this.hour = data.hour == null ? '' : data.hour;
+      this.city = data.city == null ? '' : data.city;  
+    }
+  }
 
   ngOnInit() {
     this.form = this.fb.group({
-      title: ['', Validators.required],
-      hour: ['', Validators.required],
-      city: ['', Validators.required]
+      title: [this.title, Validators.required],
+      hour: [this.hour, Validators.required],
+      city: [this.city, Validators.required]
     });
   }
 

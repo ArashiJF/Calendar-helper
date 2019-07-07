@@ -60,7 +60,7 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit() {}
 
-  openDialog(arg) {
+  addReminder(arg) {
     const dialogConfig = new MatDialogConfig;
 
     //position of the dialog that will open
@@ -70,33 +70,7 @@ export class CalendarComponent implements OnInit {
     //dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
 
-    //open dialog calling the dialog component and receive the save data (if any)
-    const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe(
-      data => {
-        if (data) {
-          this._id++
-          let hourMinutes = data.hour.split(":");
-
-          //we add the hour and minutes to the date registered
-          let aStart = moment(arg.date).add(hourMinutes[0], 'hours').add(hourMinutes[1],'minutes').format();
-          let anEnd = moment(arg.date).add(hourMinutes[0], 'hours').add(hourMinutes[1]+1,'minutes').format();
-          //we need to add the new event into the array and as such we concatenate it
-          //we will also add the id to the event
-          this.calendarEvents = this.calendarEvents.concat({
-            id: this._id,
-            title: data.title,
-            start: aStart,
-            end: anEnd,
-            hour: data.hour,
-            city: data.city
-          });
-        }
-        console.log(this.calendarEvents);
-      }
-    );
-
+    this.dialogHandler(arg, dialogConfig);
   }
 
   //show an event information as popup
@@ -115,13 +89,94 @@ export class CalendarComponent implements OnInit {
     });
   } 
 
-  modifyTitle(eventIndex, newTitle) {
-    let copyCalendarEvents = this.calendarEvents.slice(); //clone the current array
-    let singleEvent = Object.assign({}, copyCalendarEvents[eventIndex]); //take the entry we want to edit
+  //function to edit the reminder
+  modifyReminder(arg) {
+    const dialogConfig = new MatDialogConfig;
+
+    //position of the dialog that will open
+    dialogConfig.position = {'top': '0', 'left': '0', 'right': '0'};
+
+    //dont let user click outside dialog to close
+    //dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    //current id
+    const _eventId = arg.event.id;
     
-    singleEvent.title = newTitle; //we edit the entry
-    copyCalendarEvents[eventIndex] = singleEvent; //we add said entry where it belongs in the copy calendar array
+    dialogConfig.data = {
+      title: arg.event.title,
+      city: arg.event.extendedProps.city,
+      hour: arg.event.extendedProps.hour
+    }
+
+    this.dialogHandler(arg, dialogConfig, _eventId);
+  }
+  
+  //add and edit reminder do the same so there is no point in having the same code twice
+  //its better to have it in a single place and pass the necessary parameters
+  dialogHandler(arg, dialogConfig, id?) {
+
+    //open dialog calling the dialog component and receive the save data (if any)
+    const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
+
+    let _eventId: number;
+    let _eventDate;
+
+    //add and edit have different callback objects thus we need to make validations
+    //to treat each of them accordingly
     
-    this.calendarEvents = copyCalendarEvents;
-  } 
+    //if we receive arg.date it means its from the add reminder function
+    if (arg.date) {
+      _eventDate = arg.date;
+    } else {
+      //if we dont receive it, it comes from the edit reminder function
+      _eventDate = moment(arg.event.start).format('YYYYMMDD');
+    }
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        if (data) {
+          //if the registry already exist we will pass its own id
+          if (id) {
+            _eventId = parseInt(id);
+          } else {
+            this._id = this._id + 1;
+            _eventId = this._id;
+          }
+
+          let hourMinutes = data.hour.split(":");
+
+          //we add the hour and minutes to the date registered
+          let aStart = moment(_eventDate).add(hourMinutes[0], 'hours').add(hourMinutes[1],'minutes').format();
+          let anEnd = moment(_eventDate).add(hourMinutes[0], 'hours').add(hourMinutes[1]+1,'minutes').format();
+          //we need to add the new event into the array and as such we concatenate it
+          //we will also add the id to the event
+          if (id) {
+            let eventIndex = this.calendarEvents.findIndex(item => item.id === id);
+            if (eventIndex !== 1) {
+              this.calendarEvents.splice(eventIndex, 1)
+            }
+            this.calendarEvents = this.calendarEvents.concat({
+              id: _eventId,
+              title: data.title,
+              start: aStart,
+              end: anEnd,
+              hour: data.hour,
+              city: data.city
+            }); 
+          } else {
+            this.calendarEvents = this.calendarEvents.concat({
+              id: _eventId,
+              title: data.title,
+              start: aStart,
+              end: anEnd,
+              hour: data.hour,
+              city: data.city
+            });
+          }
+        }
+        console.log(this.calendarEvents);
+      }
+    );
+  }
 }
