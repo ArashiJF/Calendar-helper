@@ -27,6 +27,9 @@ import {
 from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
 
+//moment module for dates
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -70,13 +73,17 @@ export class CalendarComponent implements OnInit {
       data => {
         if (data) {
           this._id++
+          let hourMinutes = data.hour.split(":");
+
+          //we add the hour and minutes to the date registered
+          let aMoment = moment(arg.date).add(hourMinutes[0], 'hours').add(hourMinutes[1],'minutes').format();
           //we need to add the new event into the array and as such we concatenate it
           //we will also add the id to the event
           this.calendarEvents = this.calendarEvents.concat({
             id: this._id,
             title: data.title,
-            start: arg.date,
-            allDay: arg.allDay,
+            start: aMoment,
+            end: aMoment,
             hour: data.hour,
             city: data.city
           });
