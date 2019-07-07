@@ -10,7 +10,7 @@
             defaultView="dayGridMonth" 
             [plugins]="calendarPlugins" 
             [events]="calendarEvents"
-            (dateClick)="handleDateClick($event)"
+            (dateClick)="openDialog($event)"
             ></full-calendar>
         </mat-card>
     </div>

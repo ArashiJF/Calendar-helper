@@ -19,8 +19,13 @@ import {
   MatToolbarModule,
   MatIconModule, 
   MatSidenavModule, 
-  MatListModule } 
+  MatListModule,
+  MatDialogModule, 
+  MatDialog,
+  MatDialogConfig,
+  MatInputModule} 
 from '@angular/material';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-calendar',
@@ -35,24 +40,42 @@ export class CalendarComponent implements OnInit {
     dayGridPlugin,
     interactionPlugin
   ];
-  
+
   /*fullcalendar event array*/
   calendarEvents: EventInput[] = [];
 
-  constructor() { 
+  constructor(private dialog: MatDialog) { 
   }
 
   ngOnInit() {
   }
 
-  addEvent() {
-    /* taken from documentation 
-    *By default, FullCalendar will only know to rerender when a property’s reference has changed. 
-    So, for adding an item to an array or modifying a property of an object, 
-    you need to create a new object instead of using the old one
-    *
-    */
-    this.calendarEvents = this.calendarEvents.concat({title: 'event 2', date: '2019-07-02'});
+  openDialog(arg) {
+    const dialogConfig = new MatDialogConfig;
+
+    //position of the dialog that will open
+    dialogConfig.position = {'top': '0', 'left': '0', 'right': '0'};
+
+    //dont let user click outside dialog to close
+    //dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    //open dialog calling the dialog component and receive the save data (if any)
+    const dialogRef = this.dialog.open(DialogComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(
+      data => {
+        this.calendarEvents = this.calendarEvents.concat({
+          title: data.title,
+          start: arg.date,
+          allDay: arg.allDay,
+          hour: data.hour,
+          city: data.city
+        });
+        console.log(this.calendarEvents);
+      }
+    );
+
   }
 
   modifyTitle(eventIndex, newTitle) {
@@ -65,6 +88,7 @@ export class CalendarComponent implements OnInit {
     this.calendarEvents = copyCalendarEvents;
   }
 
+  /*
   handleDateClick(arg) 
   {
     if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
@@ -74,5 +98,6 @@ export class CalendarComponent implements OnInit {
         allDay: arg.allDay
       })
     }
-  }
+    console.log(this.calendarEvents);
+  } */ 
 }
