@@ -1,2 +1,17 @@
-<full-calendar defaultView="dayGridMonth" [plugins]="calendarPlugins"></full-calendar>
+<mat-toolbar class="uptoolbar" color="primary">
+    <span>Welcome To Calendar Helper</span>
+    <span class="fill-remaining-space"></span>
+</mat-toolbar>
+<div class='app'>
+    <div class='calendar'>
+        <mat-card class='calendar-card'>
+            <full-calendar 
+            #calendar 
+            defaultView="dayGridMonth" 
+            [plugins]="calendarPlugins" 
+            [events]="calendarEvents"
+            ></full-calendar>
+        </mat-card>
+    </div>
+</div>
 
