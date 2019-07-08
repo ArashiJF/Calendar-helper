@@ -1,5 +1,5 @@
 <mat-toolbar class="uptoolbar" color="primary">
-    <span>Welcome To Calendar Helper</span>
+    <span>{{ user || ' '}} Welcome to your calendar</span>
     <span class="fill-remaining-space"></span>
 </mat-toolbar>
 <div class='app'>
@@ -10,8 +10,9 @@
             defaultView="dayGridMonth" 
             [plugins]="calendarPlugins" 
             [events]="calendarEvents"
-            (dateClick)="openDialog($event)"
+            (dateClick)="addReminder($event)"
             (eventMouseEnter)="information($event)"
+            (eventClick)="modifyReminder($event)"
             ></full-calendar>
         </mat-card>
     </div>

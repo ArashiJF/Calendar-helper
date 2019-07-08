@@ -1,5 +1,10 @@
-<h2 mat-dialog-title>Place reminder</h2>
-
+<mat-toolbar class="uptoolbar" color="primary">
+    <div>
+        <span class="date">
+           {{ title || 'add event' }} : {{ date }} 
+        </span>
+    </div>
+</mat-toolbar>
 <mat-dialog-content [formGroup]="form">
     <mat-form-field>
         <input matInput maxlength="30" type="text" placeholder="Reminder" formControlName="title" required>
@@ -8,7 +13,24 @@
         <input matInput type="time" atp-time-picker placeholder="time" formControlName="hour" required>
     </mat-form-field>
     <mat-form-field>
-        <input matInput type="text" placeholder="City" formControlName="city" required>
+        <mat-label>
+            City Select
+        </mat-label>
+        <mat-select formControlName="city">
+            <mat-option *ngFor="let city of cities" [value]="city">
+                {{ city }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>
+            Event color
+        </mat-label>
+        <mat-select formControlName="color">
+            <mat-option *ngFor="let color of colors" [value]="color">
+                {{ color }}
+            </mat-option>
+        </mat-select>
     </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
@@ -16,7 +38,10 @@
         <button mat-button class="mat-raised-button" (click)="close()">
             Close
         </button>
-            <button [disabled]="!form.valid" mat-button class="mat-raised-button mat-primary" (click)="save()">
-                        Save
-            </button>            
+        <button *ngIf="!isAdd" mat-button [disabled]="isAdd" class="mat-raised-button" color="warn" (click)="delete()">
+            Delete
+        </button>
+        <button [disabled]="!form.valid" mat-button class="mat-raised-button mat-primary" (click)="save()">
+            Save
+        </button>            
 </mat-dialog-actions>
