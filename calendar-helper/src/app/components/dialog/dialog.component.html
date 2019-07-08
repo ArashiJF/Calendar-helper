@@ -38,7 +38,10 @@
         <button mat-button class="mat-raised-button" (click)="close()">
             Close
         </button>
-            <button [disabled]="!form.valid" mat-button class="mat-raised-button mat-primary" (click)="save()">
-                        Save
-            </button>            
+        <button *ngIf="!isAdd" mat-button [disabled]="isAdd" class="mat-raised-button" color="warn" (click)="delete()">
+            Delete
+        </button>
+        <button [disabled]="!form.valid" mat-button class="mat-raised-button mat-primary" (click)="save()">
+            Save
+        </button>            
 </mat-dialog-actions>

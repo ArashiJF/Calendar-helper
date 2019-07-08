@@ -40,11 +40,15 @@ export class DialogComponent implements OnInit {
 
   form: FormGroup;
 
+  //by default we are adding a new reminder
+  isAdd: boolean;
+  
   title: string = '';
   hour: string = '';
   city: string = '';
   date: any;
   color: string = '';
+  
   cities: string[] = [
     'Bogotá',
     'Cartagena',
@@ -72,11 +76,14 @@ export class DialogComponent implements OnInit {
     private dialogRef: MatDialogRef<DialogComponent>,
     @Inject(MAT_DIALOG_DATA) data
   ) {
-    if (data) {
+
+    this.isAdd = true;
+    if (data.title) {
       this.title = data.title == null ? '' : data.title;
       this.hour = data.hour == null ? '' : data.hour;
       this.city = data.city == null ? '' : data.city;
       this.color = data.color == null ? '' : data.color;
+      //this.isAdd = false; 
     }
 
     //Date for showing on top of dialog form
@@ -90,7 +97,8 @@ export class DialogComponent implements OnInit {
       title: [this.title, Validators.required],
       hour: [this.hour, Validators.required],
       city: [this.city, Validators.required],
-      color: [this.color]
+      color: [this.color],
+      delete: [false]
     });
   }
 
@@ -102,5 +110,14 @@ export class DialogComponent implements OnInit {
   //close the dialog form
   close() {
     this.dialogRef.close();
+  }
+
+  delete() {
+    //we check if we are adding or editing
+    if (!this.isAdd) {
+      //we set the delete to true
+      this.form.value.delete = true;
+      this.dialogRef.close(this.form.value);
+    }
   }
 }

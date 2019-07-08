@@ -74,8 +74,9 @@ export class CalendarComponent implements OnInit {
 
   //show an event information as popup
   information(arg) {
-    //set up the message to show
-    let message = arg.event.title + ' ' +arg.event.extendedProps.city;
+    //set up the message to showc
+    let hour = moment(arg.event.start).format('HHmm');
+    let message = hour + ': ' +arg.event.extendedProps.city + ' ' +  arg.event.title.toUpperCase();
     this.openSnackBar(message);
   }
 
@@ -109,7 +110,6 @@ export class CalendarComponent implements OnInit {
       date: arg.event.start,
       color: arg.event.backgroundColor
     }
-    console.log(arg);
     this.dialogHandler(arg, dialogConfig, _eventId);
   }
 
@@ -138,6 +138,7 @@ export class CalendarComponent implements OnInit {
     dialogRef.afterClosed().subscribe(
       data => {
         if (data) {
+
           //if the registry already exist we will pass its own id
           if (id) {
             _eventId = parseInt(id);
@@ -185,7 +186,6 @@ export class CalendarComponent implements OnInit {
             this.openSnackBar("New event added");
           }
         }
-        console.log(this.calendarEvents);
       }
     );
   }
