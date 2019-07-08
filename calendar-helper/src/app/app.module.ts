@@ -34,6 +34,7 @@ import { FullCalendarModule } from '@fullcalendar/angular'; // for FullCalendar!
 import { HttpClientModule } from '@angular/common/http';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { ForecastService } from './services/forecast.service';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
     MatOptionModule,
     MatSelectModule
   ],
-  providers: [],
+  providers: [ForecastService],
   bootstrap: [AppComponent],
   entryComponents: [DialogComponent]
 })
