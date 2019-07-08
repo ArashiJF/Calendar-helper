@@ -13,7 +13,14 @@
         <input matInput type="time" atp-time-picker placeholder="time" formControlName="hour" required>
     </mat-form-field>
     <mat-form-field>
-        <input matInput type="text" placeholder="City" formControlName="city" required>
+        <mat-label>
+            City Select
+        </mat-label>
+        <mat-select formControlName="city">
+            <mat-option *ngFor="let city of cities" [value]="city">
+                {{ city }}
+            </mat-option>
+        </mat-select>
     </mat-form-field>
     <mat-form-field>
         <mat-label>

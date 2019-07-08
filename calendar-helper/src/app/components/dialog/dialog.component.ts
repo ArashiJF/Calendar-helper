@@ -45,6 +45,18 @@ export class DialogComponent implements OnInit {
   city: string = '';
   date: any;
   color: string = '';
+  cities: string[] = [
+    'Bogotá',
+    'Cartagena',
+    'Santa Marta',
+    'Cali',
+    'Medellin',
+    'Barranquilla',
+    'Cúcuta',
+    'Pereira',
+    'Bucaramanga',
+    'Montería'
+  ];
 
   //array of supported colors
   colors = [
